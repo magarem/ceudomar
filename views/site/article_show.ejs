@@ -1,0 +1,66 @@
+<%- include header.ejs %>
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <div class="blog-post">
+        <div class="row">
+          <div class="col-sm-12" style="margin-bottom: 20px">
+            <h2 class="blog-post-title"><%=artigo.title%></h2>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+              <img src="/uploads/<%=artigo.img%>" style="width:100%">
+            </div>
+            <div class="col-sm-6">
+              <!-- <p class="blog-post-meta">{{article_date}}</p> -->
+              <p><b>Data:</b> <%=artigo.date.split("-").reverse().join("/")%></p>
+              <p><b>Horário:</b> <%=artigo.time%></p>
+              <p><b>Farda:</b> <%=artigo.farda%></p>
+              <p><b>Hinário:</b> <%=artigo.hinario%></p>
+              <p><b>Contribuição:</b> <%=artigo.price%></p>
+              <p><b>Obs:</b> <%=artigo.obs%></p>
+
+              <button style="width:100px; background-color:green; color: white" onclick="location.href='/article_edit?id=<%=artigo.id%>'">Editar</button>
+              <button style="width:100px; background-color:red; color: white" onclick="article_delete('<%=artigo.id%>')">Excluir</button>
+            </div>
+        </div>
+
+      </div><!-- /.blog-post -->
+    </div><!-- /.blog-main -->
+  </div><!-- /.row -->
+</main><!-- /.container -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  form = new FormData();
+  function article_delete(id){
+
+    if (confirm('Confirma exclusão de registro?')){
+      // Build form data to pass the id to exclude
+
+      // form.append('id', id);
+      data = {}
+      data.id = id
+
+      $.ajax({
+        method: 'POST',
+        url: '/article_delete',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        // enctype: 'multipart/form-data',
+        processData: false,
+        success: function (resp) {
+          //$("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
+          //location.href="/article_show?id=" + document.getElementById('id').value
+          location.href="/article_delete_ok"
+        },
+        error: function (data) {
+          console.log("error:"+error);
+          console.log(data);
+        }
+      })
+    }
+  }
+</script>
+<%- include footer.ejs %>

@@ -1,0 +1,153 @@
+<%- include header.ejs %>
+<body>
+  <form id=form method="post" action="/upload" enctype="multipart/form-data">
+    <div class="form-group row">
+      <div class="col-12 text-center">
+        <h2>Adicionando artigos</h2>
+      </div>
+    </div>
+    <div class="form-group row">
+      <!-- <label for="titulo" class="col-2 col-form-label">Id</label> -->
+      <div class="col-10">
+        <input id="id" name="id" type="hidden" value="<%=artigo.id%>"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="titulo" class="col-2 col-form-label">Título</label>
+      <div class="col-10">
+        <input id="title" name="title" type="text" value="<%=artigo.title%>"  required="required" class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="data" class="col-2 col-form-label">Data</label>
+      <div class="col-10">
+        <input id="date" name="date" type="date" required="required"  value="<%=artigo.date%>"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="horario" class="col-2 col-form-label">Horário</label>
+      <div class="col-10">
+        <input id="time" name="time" type="time" required="required"  value="<%=artigo.time%>"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="farda" class="col-2 col-form-label">Farda</label>
+      <div class="col-10">
+        <input id="farda" name="farda" type="text" required="required"  value="<%=artigo.farda%>"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="hinario" class="col-2 col-form-label">Hinário</label>
+      <div class="col-10">
+        <input id="hinario" name="hinario" type="text"  value="<%=artigo.hinario%>"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="contribuicao" class="col-2 col-form-label">Contribuição</label>
+      <div class="col-10">
+        <input id="price" name="price" type="text"  value="<%=artigo.price%>"  class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="imagem" class="col-2 col-form-label">Imagem</label>
+      <div class="col-10">
+        <div id="divServerResponse">
+          <%
+          if (artigo.img){
+          %>
+           <img id=formImg src=/uploads/<%=artigo.img%> style="width:150px">
+          <%
+          }
+          %>
+        </div>
+
+
+          <!-- <input id="imagem" name="imagem" type="text"  value="7777"  class="form-control"> -->
+          <input type="hidden" id="img_" name="img_" value="<%=artigo.img%>">
+          <input style="padding-top:10px" type="file" id="img" name="img" accept="image/*">
+          <!-- <input type='file' id='fileUpload' class='upload' name='userfile'/> -->
+
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="obs" class="col-2 col-form-label">Obs</label>
+      <div class="col-10">
+        <textarea style="font-size:22px;" id="obs" name="obs" cols="40" rows="5" class="form-control"><%=artigo.obs%></textarea>
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <div class="offset-2 col-10">
+        <!-- <button name="submit" type="submit" class="btn btn-primary">Registrar</button> -->
+        <button style="width:250px; " type="button" onclick="resizeAndSendToServer()">Salvar</button>
+        <button style="width:250px; " type="button" onclick="javascript:history.go(-1)">Cancelar</button>
+      </div>
+      <br><Br>
+      <br><Br>
+    </div>
+  </form>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!-- <script src="https://www.marvinj.org/releases/marvinj-0.8.js"></script> -->
+  <script src="js/load-image.all.min.js"></script>
+
+  <script>
+  form = new FormData();
+  document.getElementById('img').onchange = function (e) {
+
+    loadImage(
+      e.target.files[0],
+      function (file) {
+        // document.body.appendChild(file);
+        var formImg = document.getElementById('formImg');
+        if (formImg) formImg.style.visibility = 'hidden';
+        $("#divServerResponse").html(file);
+
+        console.log("file.toDataURL():", file.toDataURL());
+        form.delete('name');
+        form.delete('blob');
+        form.append('name', e.target.files[0].name);
+        form.append('blob', file.toDataURL());
+      },
+      {maxWidth: 200, orientation: true,
+      canvas: true,
+      downsamplingRatio:0.5} // Options
+    );
+  };
+
+
+      function resizeAndSendToServer(){
+        $("#divServerResponse").html("uploading...");
+        form.append('id', document.getElementById('id').value);
+        form.append('title', document.getElementById('title').value);
+        form.append('date', document.getElementById('date').value);
+        form.append('time', document.getElementById('time').value);
+        form.append('farda', document.getElementById('farda').value);
+        form.append('hinario', document.getElementById('hinario').value);
+        form.append('price', document.getElementById('price').value);
+        form.append('obs', document.getElementById('obs').value);
+        form.append('img_', document.getElementById('img_').value);
+      	$.ajax({
+      		method: 'POST',
+      		url: '/up',
+      		data: form,
+      		// enctype: 'multipart/form-data',
+      		contentType: false,
+      		processData: false,
+
+
+      		success: function (resp) {
+            $("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
+            //location.href="/article_show?id=" + document.getElementById('id').value
+            location.href="/article_show?id="+resp
+          },
+      		error: function (data) {
+      			console.log("error:"+error);
+      			console.log(data);
+      		},
+
+      	});
+      };
+
+  </script>
+</body>
+<%- include footer.ejs %>

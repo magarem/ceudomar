@@ -1,0 +1,17 @@
+{
+  "name": "ceudomar",
+  "version": "1.0.0",
+  "description": "novo site do Céu do Mar",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "multer": "^1.4.1"
+  }
+}
