@@ -4,6 +4,13 @@
   <p>Desenvolvido pela Magaweb / Designer:<a href="https://twitter.com/mdo">@mdo</a></p>
   <p>
     <a href="#">Back to top</a>
+    <%if (user_id != "0" ){%>
+      |
+      <a href="/logout?user_id=<%=user_id%>">[Logout]</a>
+    <%}else{%>
+      |
+      <a href="/login">[Login]</a>
+    <%}%>
   </p>
 </footer>
 </body>

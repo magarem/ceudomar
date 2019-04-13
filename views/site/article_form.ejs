@@ -1,6 +1,6 @@
 <%- include header.ejs %>
 <body>
-  <form id=form method="post" action="/upload" enctype="multipart/form-data">
+  <form id=form method="post" action="/up" enctype="multipart/form-data">
     <div class="form-group row">
       <div class="col-12 text-center">
         <h2>Adicionando artigos</h2>
@@ -9,6 +9,7 @@
     <div class="form-group row">
       <!-- <label for="titulo" class="col-2 col-form-label">Id</label> -->
       <div class="col-10">
+        <input id="user_id" name="user_id" type="hidden" value="<%=user_id%>"  class="form-control">
         <input id="id" name="id" type="hidden" value="<%=artigo.id%>"  class="form-control">
       </div>
     </div>
@@ -94,29 +95,30 @@
   form = new FormData();
   document.getElementById('img').onchange = function (e) {
 
-    loadImage(
-      e.target.files[0],
-      function (file) {
-        // document.body.appendChild(file);
-        var formImg = document.getElementById('formImg');
-        if (formImg) formImg.style.visibility = 'hidden';
-        $("#divServerResponse").html(file);
+      loadImage(
+        e.target.files[0],
+        function (file) {
+          // document.body.appendChild(file);
+          var formImg = document.getElementById('formImg');
+          if (formImg) formImg.style.visibility = 'hidden';
+          $("#divServerResponse").html(file);
 
-        console.log("file.toDataURL():", file.toDataURL());
-        form.delete('name');
-        form.delete('blob');
-        form.append('name', e.target.files[0].name);
-        form.append('blob', file.toDataURL());
-      },
-      {maxWidth: 200, orientation: true,
-      canvas: true,
-      downsamplingRatio:0.5} // Options
-    );
-  };
+          console.log("file.toDataURL():", file.toDataURL());
+          form.delete('name');
+          form.delete('blob');
+          form.append('name', e.target.files[0].name);
+          form.append('blob', file.toDataURL());
+        },
+        {maxWidth: 200, orientation: true,
+        canvas: true,
+        downsamplingRatio:0.5} // Options
+      );
+    };
 
 
       function resizeAndSendToServer(){
         $("#divServerResponse").html("uploading...");
+        form.append('user_id', document.getElementById('user_id').value);
         form.append('id', document.getElementById('id').value);
         form.append('title', document.getElementById('title').value);
         form.append('date', document.getElementById('date').value);
@@ -138,7 +140,7 @@
       		success: function (resp) {
             $("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
             //location.href="/article_show?id=" + document.getElementById('id').value
-            location.href="/article_show?id="+resp
+            location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
           },
       		error: function (data) {
       			console.log("error:"+error);

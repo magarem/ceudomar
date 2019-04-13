@@ -84,11 +84,13 @@
       </div>
     </div>
   </header>
-
+  <%
+  if (typeof user_id === 'undefined') user_id=0
+  %>
   <div class="nav-scroller py-1 mb-2 text-center">
     <nav class="nav d-flex justify-content-between- ">
-      <a class="p-2 text-muted" href="/">Home</a>
-      <a class="p-2 text-muted" href="/drive">Drive virtual</a>
-      <a class="p-2 text-muted" href="/contact">Contato</a>
+      <a class="p-2 text-muted" href="/?user_id=<%=user_id%>">Home</a>
+      <a class="p-2 text-muted" href="/drive?user_id=<%=user_id%>">Drive virtual</a>
+      <a class="p-2 text-muted" href="/contact?user_id=<%=user_id%>">Contato</a>
     </nav>
   </div>

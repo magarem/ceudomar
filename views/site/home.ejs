@@ -3,6 +3,7 @@
     <div class="col-md-12 px-0">
       <h1 _class="display-4 font-italic">Visitantes (1ª vez no Céu do Mar)</h1>
       <h2> Mensagem do Padrinho aos visitantes</h2>
+      
       <p class="lead_ my-3">Visitantes só podem participar dos trabalhos após terem feito a entrevista de novos, em dia anterior ao trabalho.
 
 As entrevistas acontecem todas as quintas-feiras e domingos na Igreja, logo após a Oração do Padrinho Sebastião que é cantada às 18:00h.
@@ -15,7 +16,9 @@ Masculino – Calça comprida e camisa de manga longa ou curta.</p>
       <!-- <p class="lead mb-0"><a href="item.html?'+t+'" class="text-white font-weight-bold">Continue reading...</a></p> -->
     </div>
   </div>
-<a href='/article_create'>[Incluir nova data]</a>
+  <%if (logged) {%>
+    <a href='/article_create?user_id=<%=user_id%>'>[Novo]</a>
+  <%}%>
   <div class="row mb-2">
    <%
     artigos.sort(function(a, b){return new Date(a.date) - new Date(b.date)});
@@ -25,7 +28,7 @@ Masculino – Calça comprida e camisa de manga longa ou curta.</p>
     <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
     <div class="col p-4 d-flex flex-column position-static">
     <!-- <strong class="d-inline-block mb-2 text-success"><%=item.title%></strong> -->
-    <h3 class="mb-0"><a href="/article_show?id=<%=item.id%>" class="stretched-link"><%=item.title%></h3></a><Br>
+    <h3 class="mb-0"><a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" class="stretched-link"><%=item.title%></h3></a><Br>
     <div class="mb-1 text-muted"><%=item.date.split("-").reverse().join("/")%> - <%=item.time%></div>
     <p class="mb-auto"><b>Farda:</b> <%=item.farda%></p>
     <p class="mb-auto"><b>Hinário:</b> <%=item.hinario%></p>

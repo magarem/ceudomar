@@ -20,9 +20,10 @@
               <p><b>Hinário:</b> <%=artigo.hinario%></p>
               <p><b>Contribuição:</b> <%=artigo.price%></p>
               <p><b>Obs:</b> <%=artigo.obs%></p>
-
-              <button style="width:100px; background-color:green; color: white" onclick="location.href='/article_edit?id=<%=artigo.id%>'">Editar</button>
-              <button style="width:100px; background-color:red; color: white" onclick="article_delete('<%=artigo.id%>')">Excluir</button>
+              <%if (logged) {%>
+                <button style="width:100px; background-color:green; color: white" onclick="location.href='/article_edit?user_id=<%=user_id%>&id=<%=artigo.id%>'">Editar</button>
+                <button style="width:100px; background-color:red; color: white" onclick="article_delete('<%=user_id%>', '<%=artigo.id%>')">Excluir</button>
+              <%}%>
             </div>
         </div>
 
@@ -34,13 +35,14 @@
 
 <script>
   form = new FormData();
-  function article_delete(id){
+  function article_delete(user_id, id){
 
     if (confirm('Confirma exclusão de registro?')){
       // Build form data to pass the id to exclude
 
       // form.append('id', id);
       data = {}
+      data.user_id = user_id
       data.id = id
 
       $.ajax({
@@ -53,7 +55,7 @@
         success: function (resp) {
           //$("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
           //location.href="/article_show?id=" + document.getElementById('id').value
-          location.href="/article_delete_ok"
+          location.href="/article_delete_ok?user_id="+resp.user_id
         },
         error: function (data) {
           console.log("error:"+error);
