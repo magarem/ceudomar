@@ -65,14 +65,14 @@ app.get('/login', (req, res) =>{
 
 
   //if (!ssn.user_id) ssn.user_id = user_id
-  res.render('site/login_form', {artigos:artigos})
+  res.render('site/login_form', {artigos:artigos, erro: false})
 });
 
 app.post('/login_do', (req, res) =>{
   // ssn=req.session;
   // user_id = req.body.user_id
   user = req.body.user
-  
+
   password = req.body.password
   if (password == "topodamata"){
     user_id = Math.random().toString(26).slice(2);
@@ -106,7 +106,7 @@ app.post('/login_do', (req, res) =>{
   }else{
     user_id = 0
     logged = false
-    res.render('site/login_form_error', {user_id: user_id, logged: logged})
+    res.render('site/login_form', {user_id: user_id, erro: true})
   }
 
 });

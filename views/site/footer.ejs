@@ -1,17 +1,32 @@
 
 <footer class="blog-footer">
-  <p>Estrada das Canoas 3046 – São conrado – Rio de Janeiro – RJ</p>
-  <p>Desenvolvido pela Magaweb / Designer:<a href="https://twitter.com/mdo">@mdo</a></p>
-  <p>
-    <a href="#">Back to top</a>
-    <%if (user_id != "0" ){%>
-      |
-      <a href="/logout?user_id=<%=user_id%>">[Logout]</a>
-    <%}else{%>
-      |
-      <a href="/login">[Login]</a>
-    <%}%>
-  </p>
+
 </footer>
+</body>
+</html>
+
+<footer>
+<div class="row expanded callout secondary">
+  <div class="small-12 small-centered columns">
+    <p>Estrada das Canoas 3046 – São conrado – Rio de Janeiro – RJ</p>
+    <p>Desenvolvido pela Magaweb / Designer: <a href="https://foundation.com">Foundation team</a></p>
+    <p>
+      <a href="#">topo</a>
+      <%if (user_id != "0" ){%>
+        |
+        <a href="/logout?user_id=<%=user_id%>">[Logout]</a>
+      <%}else{%>
+        |
+        <a href="/login">[Login]</a>
+      <%}%>
+    </p>
+  </div>
+</div>
+</footer>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+<script>
+      $(document).foundation();
+    </script>
 </body>
 </html>

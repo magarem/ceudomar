@@ -1,53 +1,113 @@
 <%- include header.ejs %>
-  <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
-    <div class="col-md-12 px-0">
-      <h1 _class="display-4 font-italic">Visitantes (1ª vez no Céu do Mar)</h1>
-      <h2> Mensagem do Padrinho aos visitantes</h2>
-      
-      <p class="lead_ my-3">Visitantes só podem participar dos trabalhos após terem feito a entrevista de novos, em dia anterior ao trabalho.
 
-As entrevistas acontecem todas as quintas-feiras e domingos na Igreja, logo após a Oração do Padrinho Sebastião que é cantada às 18:00h.
 
-Não é necessário marcar, basta comparecer nos dias definidos. Nas quintas e domingos que coincidam com datas de trabalho, não haverá entrevista.
-<br><br>
-Trajes para a entrevista/trabalho:<br>
-Feminino – Saia abaixo do joelho e camisa sem decote.<br>
-Masculino – Calça comprida e camisa de manga longa ou curta.</p>
-      <!-- <p class="lead mb-0"><a href="item.html?'+t+'" class="text-white font-weight-bold">Continue reading...</a></p> -->
-    </div>
-  </div>
-  <%if (logged) {%>
-    <a href='/article_create?user_id=<%=user_id%>'>[Novo]</a>
-  <%}%>
-  <div class="row mb-2">
-   <%
-    artigos.sort(function(a, b){return new Date(a.date) - new Date(b.date)});
-    artigos.forEach(function(item){
-   %>
-    <div class="col-md-6">
-    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-    <div class="col p-4 d-flex flex-column position-static">
-    <!-- <strong class="d-inline-block mb-2 text-success"><%=item.title%></strong> -->
-    <h3 class="mb-0"><a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" class="stretched-link"><%=item.title%></h3></a><Br>
-    <div class="mb-1 text-muted"><%=item.date.split("-").reverse().join("/")%> - <%=item.time%></div>
-    <p class="mb-auto"><b>Farda:</b> <%=item.farda%></p>
-    <p class="mb-auto"><b>Hinário:</b> <%=item.hinario%></p>
-    <p class="mb-auto"><b>Contribuição:</b> <%=item.price%></p>
-    <p class="mb-auto"><%=item.obs%></p>
-    <!-- <a href="/article_show?id=<%=item.id%>" class="stretched-link">Continue reading</a> -->
-    </div>
-    <div class="col-auto d-none d-lg-block">
+<!-- <hr> -->
+<div class="row column"><br>
+<!-- <h4 style="margin-top:20px; margin-bottom:20px;">Calendário</h4> -->
 
-    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-      <title></title>
-      <rect width="100%" height="100%" fill="#55595c"/>
-      <image xlink:href="/uploads/<%=item.img%>"
-        x="0" y="0" height="250" width="200px"/></svg>
-    </div>
-    </div>
-    </div>
-  <%})%>
-
-  </div>
+<%if (logged) {%>
+  <a href='/article_create?user_id=<%=user_id%>'>[Novo]</a>
+<%}%>
 </div>
+<!-- <hr> -->
+<div class="row">
+<div class="large-8 columns" style="border-right: 1px solid #E3E5E8;">
+
+
+
+<article>
+  <div class="row column" style="margin-bottom: 15px;">
+    <h4 >Calendário</h4>
+  </div>
+  <%
+   artigos.sort(function(a, b){return new Date(a.date) - new Date(b.date)});
+   artigos.forEach(function(item, key, arr){
+  %>
+
+
+
+  <div class="row">
+    <div class="large-4 columns">
+      <p><img src="/uploads/<%=item.img%>" alt="image for article" class="thumbnail"></p>
+    </div>
+    <div class="large-8 columns">
+      <h5><a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" ><%=item.title%></a></h5>
+
+
+      <table>
+
+        <tbody>
+          <tr>
+            <td align="right"><b>Data</b></td>
+            <td><%=item.date.split("-").reverse().join("/")%> - <%=item.time%></td>
+          </tr>
+          <tr>
+            <td align="right"><b>Farda</b></td>
+            <td><%=item.farda%></td>
+          </tr>
+          <tr>
+            <td align="right"><b>Hinário</b></td>
+            <td><%=item.hinario%></td>
+          </tr>
+          <tr>
+            <td align="right"><b>Contribuição</b></td>
+            <td><%=item.price%></td>
+          </tr>
+          <tr>
+            <td align="right" colspan="2"><%=item.obs%></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%
+  if (!Object.is(arr.length - 1, key)) {
+  %>
+    <hr>
+  <%
+  }
+  %>
+
+
+
+
+<%})%>
+
+<br>
+
+
+</article>
+
+
+
+
+</div>
+<div class="large-4 columns">
+
+<aside>
+<div class="row column">
+  <div class="row column" style="margin-bottom: 15px;">
+    <h4 >Mensagem aos visitantes</h4>
+    <h5>(1ª vez no Céu do Mar)</h5>
+  </div>
+
+<p><a href="">Mensagem do Padrinho aos visitantes</a>
+
+<p>Visitantes só podem participar dos trabalhos após terem feito a entrevista de novos, em dia anterior ao trabalho.
+
+<p>As entrevistas acontecem todas as quintas-feiras e domingos na Igreja, logo após a Oração do Padrinho Sebastião que é cantada às 18:00h.
+
+<p>Não é necessário marcar, basta comparecer nos dias definidos. Nas quintas e domingos que coincidam com datas de trabalho, não haverá entrevista.
+
+<p>Trajes para a entrevista/trabalho:<br>
+Feminino – Saia abaixo do joelho e camisa sem decote.<br>
+Masculino – Calça comprida e camisa de manga longa ou curta.
+</div>
+</aside>
+</div>
+</div>
+
+
+
 <%- include footer.ejs %>

@@ -80,11 +80,10 @@
     <div class="form-group row">
       <div class="offset-2 col-10">
         <!-- <button name="submit" type="submit" class="btn btn-primary">Registrar</button> -->
-        <button style="width:250px; " type="button" onclick="resizeAndSendToServer()">Salvar</button>
-        <button style="width:250px; " type="button" onclick="javascript:history.go(-1)">Cancelar</button>
+        <button class=button type="button" onclick="resizeAndSendToServer()">Salvar</button>
+        <button class=button type="button" onclick="javascript:history.go(-1)">Cancelar</button>
       </div>
-      <br><Br>
-      <br><Br>
+      <br>
     </div>
   </form>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -109,7 +108,7 @@
           form.append('name', e.target.files[0].name);
           form.append('blob', file.toDataURL());
         },
-        {maxWidth: 200, orientation: true,
+        {maxWidth: 270, orientation: true,
         canvas: true,
         downsamplingRatio:0.5} // Options
       );

@@ -4,25 +4,44 @@
     <div class="col-md-8 blog-main">
       <div class="blog-post">
         <div class="row">
-          <div class="col-sm-12" style="margin-bottom: 20px">
+          <div class="col-sm-12" style="margin-left: 12px; margin-top: 20px; margin-bottom: 20px">
             <h2 class="blog-post-title"><%=artigo.title%></h2>
           </div>
         </div>
         <div class="row">
-            <div class="col-sm-6">
-              <img src="/uploads/<%=artigo.img%>" style="width:100%">
+            <div class="large-3 columns">
+              <img src="/uploads/<%=artigo.img%>" class="thumbnail" style="width:260px;">
             </div>
-            <div class="col-sm-6">
-              <!-- <p class="blog-post-meta">{{article_date}}</p> -->
-              <p><b>Data:</b> <%=artigo.date.split("-").reverse().join("/")%></p>
-              <p><b>Horário:</b> <%=artigo.time%></p>
-              <p><b>Farda:</b> <%=artigo.farda%></p>
-              <p><b>Hinário:</b> <%=artigo.hinario%></p>
-              <p><b>Contribuição:</b> <%=artigo.price%></p>
-              <p><b>Obs:</b> <%=artigo.obs%></p>
+            <div class="large-9 columns">
+              <!-- <h5><a href="/article_show?user_id=<%=user_id%>&id=<%=artigo.id%>" ><%=artigo.title%></a></h5> -->
+              <table>
+                <tbody>
+                  <tr>
+                    <td align="right"><b>Data</b></td>
+                    <td><%=artigo.date.split("-").reverse().join("/")%> - <%=artigo.time%></td>
+                  </tr>
+                  <tr>
+                    <td align="right"><b>Farda</b></td>
+                    <td><%=artigo.farda%></td>
+                  </tr>
+                  <tr>
+                    <td align="right"><b>Hinário</b></td>
+                    <td><%=artigo.hinario%></td>
+                  </tr>
+                  <tr>
+                    <td align="right"><b>Contribuição</b></td>
+                    <td><%=artigo.price%></td>
+                  </tr>
+                  <tr>
+                    <td align="right" colspan="2"><%=artigo.obs%></td>
+                  </tr>
+
+                </tbody>
+              </table>
+
               <%if (logged) {%>
-                <button style="width:100px; background-color:green; color: white" onclick="location.href='/article_edit?user_id=<%=user_id%>&id=<%=artigo.id%>'">Editar</button>
-                <button style="width:100px; background-color:red; color: white" onclick="article_delete('<%=user_id%>', '<%=artigo.id%>')">Excluir</button>
+                <button class="button" onclick="location.href='/article_edit?user_id=<%=user_id%>&id=<%=artigo.id%>'">Editar</button>
+                <button class="button" onclick="article_delete('<%=user_id%>', '<%=artigo.id%>')">Excluir</button>
               <%}%>
             </div>
         </div>
@@ -30,7 +49,7 @@
       </div><!-- /.blog-post -->
     </div><!-- /.blog-main -->
   </div><!-- /.row -->
-</main><!-- /.container -->
+</main><!-- /.container --><br><Br><br>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
