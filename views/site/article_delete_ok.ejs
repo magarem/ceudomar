@@ -1,19 +1,13 @@
 <%- include header.ejs %>
-
-<section class="h-100">
-  <header class="container h-100">
-    <div class="d-flex align-items-center justify-content-center h-100">
-      <div class="d-flex flex-column">
-        <br><BR><br><BR>
-        <h1 class="text align-self-center p-2" style="font-size:35px;">Registro excluido com sucesso</h1>
-        <br><BR><br><BR>
-        <button onclick="location.href='/?user_id=<%=user_id%>'" style="font-size:25px;" _class="btn btn-default align-self-center p-2" type="button" name="button">Início</button>
-        <br><BR>
-        <br><BR>
-        <br><BR>
+<body>
+  <div class="medium-12">
+    <div class="row">
+      <div class="row" style="margin-left: 5px; margin-top: 20px;">
+          <!-- <h4>Autenticação</h4> -->
       </div>
+      <p>Registro excluido com sucesso</p>
+      <button onclick="location.href='/?user_id=<%=user_id%>'" class=button type="button" name="button">Início</button>
     </div>
-  </header>
-</section>
-
+  </div><br><Br>
+</body>
 <%- include footer.ejs %>

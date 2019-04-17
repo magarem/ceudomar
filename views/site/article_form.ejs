@@ -128,39 +128,52 @@
 
 
       function resizeAndSendToServer(){
-        $("#divServerResponse").html("uploading...");
-        form.append('user_id', document.getElementById('user_id').value);
-        form.append('id', document.getElementById('id').value);
-        form.append('title', document.getElementById('title').value);
-        form.append('date', document.getElementById('date').value);
-        form.append('time', document.getElementById('time').value);
-        form.append('farda', document.getElementById('farda').value);
-        form.append('hinario', document.getElementById('hinario').value);
-        form.append('price', document.getElementById('price').value);
-        form.append('obs', document.getElementById('obs').value);
-        form.append('img_', document.getElementById('img_').value);
-      	$.ajax({
-      		method: 'POST',
-      		url: '/up',
-      		data: form,
-      		// enctype: 'multipart/form-data',
-      		contentType: false,
-      		processData: false,
+        // Checks da date
+        d = new Date(Date.now()).getDate().toString()
+        m = (new Date(Date.now()).getMonth()).toString()
+        y = new Date(Date.now()).getFullYear().toString()
 
 
-      		success: function (resp) {
-            $("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
-            //location.href="/article_show?id=" + document.getElementById('id').value
-            location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
-          },
-      		error: function (data) {
-      			console.log("error:"+error);
-      			console.log(data);
-      		},
+        var date_today = new Date(y,m,d);
 
-      	});
+        mydate=new Date(document.getElementById('date').value.split('-').join(','));
+
+        if(mydate >= date_today){
+          $("#divServerResponse").html("uploading...");
+          form.append('user_id', document.getElementById('user_id').value);
+          form.append('id', document.getElementById('id').value);
+          form.append('title', document.getElementById('title').value);
+          form.append('date', document.getElementById('date').value);
+          form.append('time', document.getElementById('time').value);
+          form.append('farda', document.getElementById('farda').value);
+          form.append('hinario', document.getElementById('hinario').value);
+          form.append('price', document.getElementById('price').value);
+          form.append('obs', document.getElementById('obs').value);
+          form.append('img_', document.getElementById('img_').value);
+        	$.ajax({
+        		method: 'POST',
+        		url: '/up',
+        		data: form,
+        		// enctype: 'multipart/form-data',
+        		contentType: false,
+        		processData: false,
+
+
+        		success: function (resp) {
+              $("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
+              location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
+            },
+        		error: function (data) {
+        			console.log("error:"+error);
+        			console.log(data);
+        		},
+
+        	});
+        }else{
+          alert("Erro: A data já venceu")
+          document.getElementById('date').focus()
+        }
       };
-
   </script>
 </body>
 <%- include footer.ejs %>
