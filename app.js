@@ -42,6 +42,7 @@ app.use(bodyParser.json());
 var upload = multer({ storage: multer.memoryStorage({}) })
 
 function login_check(user_id){
+  user_id = user_id||0
   logged = false
   console.log('user_id>>>:', user_id);
   console.log('login_var>>>:', login_var);
