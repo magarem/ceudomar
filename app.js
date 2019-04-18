@@ -100,6 +100,27 @@ app.post('/login_do', (req, res) =>{
     login_var.push(login_var_new)
 
     fs.writeFileSync("./login.json", JSON.stringify(login_var, null, 4))
+
+    //Exclude all old articles
+    //Deleting olders itens
+    d = new Date(Date.now()).getDate().toString()
+    m = (new Date(Date.now()).getMonth()).toString()
+    y = new Date(Date.now()).getFullYear().toString()
+    artigos_ = []
+    artigos.forEach(function(item){
+      console.log("before--*", new Date(item.date.split('-').join(',')), new Date(y,m,d,00,00,00));
+      if (new Date(item.date.split('-').join(',')) >= new Date(y,m,d,00,00,00)){
+        console.log("after--*", new Date(item.date), new Date(y,m,d));
+        artigos_.push(item)
+      }
+    });
+    artigos = artigos_
+    // Cheks the limits
+    if (artigos.length > 20) artigos.length = 20
+    // Json file save
+    fs.writeFileSync("./data.json", JSON.stringify(artigos, null, 4))
+
+
     res.render('site/login_form_pass', {user_id: user_id, logged: logged})
   }else{
     user_id = 0
@@ -139,6 +160,21 @@ app.get('/', (req, res) =>{
   //user_id = Math.random().toString(26).slice(2);
   // ssn=req.session;
   // if (!ssn.user_id) ssn.user_id = user_id
+
+  //Filter to show only the newers
+  d = new Date(Date.now()).getDate().toString()
+  m = (new Date(Date.now()).getMonth()).toString()
+  y = new Date(Date.now()).getFullYear().toString()
+  artigos_ = []
+  artigos.forEach(function(item){
+    console.log("before--*", new Date(item.date.split('-').join(',')), new Date(y,m,d,00,00,00));
+    if (new Date(item.date.split('-').join(',')) >= new Date(y,m,d,00,00,00)){
+      console.log("after--*", new Date(item.date), new Date(y,m,d));
+      artigos_.push(item)
+    }
+  });
+  artigos = artigos_
+
   res.render('site/home', {artigos:artigos, user_id: user_id_, logged: logged_})
 });
 
@@ -236,16 +272,6 @@ app.post('/up', upload.single('blob'), (req, res, next) => {
       console.log("imgName:", imgName);
 
 
-
-
-
-      //Deleting olders itens
-      d = new Date(Date.now()).getDate().toString()
-      m = (new Date(Date.now()).getMonth()).toString()
-      y = new Date(Date.now()).getFullYear().toString()
-
-
-
       // Delete existent reg
       if (req.body.id){
         console.log("req.body.id:", req.body.id);
@@ -276,23 +302,6 @@ app.post('/up', upload.single('blob'), (req, res, next) => {
 
       // Json Add Reg
       artigos.push(file_txt)
-
-
-       console.log(":::::::::::>", new Date(y,m,d));
-
-      //Exclude all old articles
-      artigos_ = []
-      artigos.forEach(function(item){
-        console.log("before--*", new Date(item.date.split('-').join(',')), new Date(y,m,d,00,00,00));
-        if (new Date(item.date.split('-').join(',')) >= new Date(y,m,d,00,00,00)){
-          console.log("after--*", new Date(item.date), new Date(y,m,d));
-          artigos_.push(item)
-        }
-      });
-      artigos = artigos_
-
-     // Cheks the limits
-     if (artigos.length > 20) artigos.length = 20
 
      // Json file save
      fs.writeFileSync("./data.json", JSON.stringify(artigos, null, 4))
