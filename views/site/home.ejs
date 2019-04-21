@@ -1,108 +1,82 @@
 <%- include header.ejs %>
-<div _class="callout large primary">
-<div _class="row column text-center">
-<h1><img style="width:100%" src="/uploads/pedra2.jpg"></h1>
-</div>
-</div>
-
-<!-- <hr> -->
-<div class="row column"><br>
-<!-- <h4 style="margin-top:20px; margin-bottom:20px;">Calendário</h4> -->
-
-<%if (logged) {%>
-  <a href='/article_create?user_id=<%=user_id%>'>[Novo]</a>
-<%}%>
-</div>
-<!-- <hr> -->
-<div class="row">
-<div class="large-8 columns" style="border-right: 1px solid #E3E5E8;">
+<style>
+.blog_item {
+    width: 30%;
+    /* float:left; */
+    margin-left:25px;
+    margin-bottom:50px;
 
 
+}
+.card {
+  /* Add shadows to create the "card" effect */
 
-<article>
-  <div class="row column" style="margin-bottom: 15px;">
-    <h4 >Calendário</h4>
-  </div>
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  /* padding: 2px 16px; */
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+/* .container > div {
+  flex: 1; /*grow*/
+} */
+</style>
+<div class="row" id="content">
+  <div class="medium-9 columns ">
+    <div class="container">
   <%
    artigos.sort(function(a, b){return new Date(a.date) - new Date(b.date)});
    artigos.forEach(function(item, key, arr){
   %>
+  <!-- <div class="row">
+<div class="medium-4 large-4 columns"> -->
 
 
-
-  <div class="row">
-    <%
-    cc = 8
-    if (item.img.length > 0){
-    %>
-    <div class="large-4 columns">
-      <p><img src="/uploads/<%=item.img%>" alt="image for article" class="thumbnail"></p>
-    </div>
-    <%
-    }else{
-      cc = 12
-    }
-    %>
-    <div class="large-<%=cc%> columns">
+  <div class="blog-post_ blog_item card">
+    <div style="padding: 10px ">
       <h5><a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" ><%=item.title%></a></h5>
-
-
-      <table>
-
-        <tbody>
-          <tr>
-            <td align="right"><b>Data</b></td>
-            <td><%=item.date.split("-").reverse().join("/")%> - <%=item.time%></td>
-          </tr>
-          <tr>
-            <td align="right"><b>Farda</b></td>
-            <td><%=item.farda%></td>
-          </tr>
-          <tr>
-            <td align="right"><b>Hinário</b></td>
-            <td><%=item.hinario%></td>
-          </tr>
-          <tr>
-            <td align="right"><b>Contribuição</b></td>
-            <td><%=item.price%></td>
-          </tr>
-          <tr>
-            <td align="right" colspan="2"><%=item.obs%></td>
-          </tr>
-
-        </tbody>
-      </table>
+      <h6><b><%=item.date.split("-").reverse().join("/")%> - <%=item.time%></b><br></h6>
+    </div>
+    <img src="/uploads/<%=item.img%>"  alt="image for article" _class="thumbnail" style="width: 2">
+    <div style="padding: 10px ">
+      <b>Farda:</b> <%=item.farda%><br>
+      <b>Hinário:</b> <%=item.hinario%><br>
+      <b>Contribuição:</b> <%=item.price%><br>
+      <%=item.obs%>
     </div>
   </div>
-  <%
-  if (!Object.is(arr.length - 1, key)) {
-  %>
-    <hr>
-  <%
-  }
-  %>
 
+   <!-- </div>
 
-
-
-<%})%>
-
-<br>
-
-
-</article>
-
-
+ </div> -->
+ <%})%>
+</div>
+ <%if (logged) {%>
+   <a href='/article_create?user_id=<%=user_id%>' class="button">Novo</a>
+ <%}%>
+ <br>
 
 
 </div>
-<div class="large-4 columns">
 
-<aside>
-<div class="row column">
+
+
+<div class="medium-3 columns" data-sticky-container>
+<div class="sticky" data-sticky data-anchor="content">
   <div class="row column" style="margin-bottom: 15px;">
-    <h4 >Mensagem aos visitantes</h4>
-    <h5>(1ª vez no Céu do Mar)</h5>
+    <h5 >Mensagem aos visitantes</h5>
+    <h6>(1ª vez no Céu do Mar)</h6>
   </div>
 
 <p><a href="">Mensagem do Padrinho aos visitantes</a>
@@ -117,9 +91,15 @@
 Feminino – Saia abaixo do joelho e camisa sem decote.<br>
 Masculino – Calça comprida e camisa de manga longa ou curta.
 </div>
-</aside>
 </div>
 </div>
+</div>
+
+
+
+
+
+
 
 
 
