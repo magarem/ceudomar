@@ -37,8 +37,11 @@
            %>
          </div>
             <input type="hidden" id="img_" name="img_" value="<%=artigo.img%>">
-            <input style="padding-top:10px" type="file" id="img" name="img" accept="image/*">
+            <!-- <input style="padding-top:10px" type="file" id="img" name="img" accept="image/*"> -->
+
           </label>
+          <label for="img" class="button small">Selecionar imagem</label>
+          <input type="file" id="img" name="img" accept="image/*" class="show-for-sr">
 
       </div>
 
@@ -89,10 +92,12 @@
 
 
      <div class="row">
-
        <div class="large-12 columns">
-         <button class=button type="button" onclick="resizeAndSendToServer()">Salvar</button>
-         <button class=button type="button" onclick="javascript:history.go(-1)">Cancelar</button>
+         <div class="button-group">
+
+           <button class="button success" type="button" onclick="resizeAndSendToServer()">Salvar</button>
+           <button class="button warning"  type="button" onclick="javascript:history.go(-1)">Cancelar</button>
+         </div>
       </div>
     </div>
   </div>

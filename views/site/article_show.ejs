@@ -1,55 +1,70 @@
 <%- include header.ejs %>
 <main role="main" class="container">
-  <div class="row">
-    <div class="col-md-8 blog-main">
-      <div class="blog-post">
-        <div class="row">
-          <div class="col-sm-12" style="margin-left: 12px; margin-top: 20px; margin-bottom: 20px">
-            <h2 class="blog-post-title"><%=artigo.title%></h2>
-          </div>
-        </div>
-        <div class="row">
-            <div class="large-3 columns">
-              <img src="/uploads/<%=artigo.img%>" class="thumbnail" style="width:260px;">
-            </div>
-            <div class="large-9 columns">
-              <!-- <h5><a href="/article_show?user_id=<%=user_id%>&id=<%=artigo.id%>" ><%=artigo.title%></a></h5> -->
-              <table>
-                <tbody>
-                  <tr>
-                    <td align="right"><b>Data</b></td>
-                    <td><%=artigo.date.split("-").reverse().join("/")%> - <%=artigo.time%></td>
-                  </tr>
-                  <tr>
-                    <td align="right"><b>Farda</b></td>
-                    <td><%=artigo.farda%></td>
-                  </tr>
-                  <tr>
-                    <td align="right"><b>Hinário</b></td>
-                    <td><%=artigo.hinario%></td>
-                  </tr>
-                  <tr>
-                    <td align="right"><b>Contribuição</b></td>
-                    <td><%=artigo.price%></td>
-                  </tr>
-                  <tr>
-                    <td align="right" colspan="2"><%=artigo.obs%></td>
-                  </tr>
+    <div class="row">
+      <div class="large-3 columns" >
+      &nbsp;
+      </div>
+      <div class="large-6 columns text-center" >
+        <h4 class="blog-post-title"><%=artigo.title%></h4><br>
+        <img src="/uploads/<%=artigo.img%>" class="thumbnail" style="width:260px; float: left;">
+        <table align=center>
+          <tbody>
+            <tr>
+              <td align="right"><b>Data</b></td>
+              <td><%=artigo.date.split("-").reverse().join("/")%> - <%=artigo.time%></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Farda</b></td>
+              <td><%=artigo.farda%></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Hinário</b></td>
+              <td><%=artigo.hinario%></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Contribuição</b></td>
+              <td><%=artigo.price%></td>
+            </tr>
+            <tr>
+              <td align="right" colspan="2"><%=artigo.obs%></td>
+            </tr>
+            <%if (logged) {%>
+            <tr>
+              <td align="right" colspan="2">
+                <div class="button-group">
+                  <button class="button success " onclick="location.href='/article_edit?user_id=<%=user_id%>&id=<%=artigo.id%>'">Editar</button>
+                  <button class="button alert" onclick="article_delete('<%=user_id%>', '<%=artigo.id%>')">Excluir</button>
+                  <button class="button" onclick="location.href='/?user_id=<%=user_id%>'">Cancelar</button>
+                </div>
+                </td>
+            </tr>
+            <%}%>
 
-                </tbody>
-              </table>
+          </tbody>
+        </table>
 
-              <%if (logged) {%>
-                <button class="button" onclick="location.href='/article_edit?user_id=<%=user_id%>&id=<%=artigo.id%>'">Editar</button>
-                <button class="button" onclick="article_delete('<%=user_id%>', '<%=artigo.id%>')">Excluir</button>
-              <%}%>
-            </div>
-        </div>
+      </div>
+      <div class="large-3 columns" >
 
-      </div><!-- /.blog-post -->
-    </div><!-- /.blog-main -->
-  </div><!-- /.row -->
+      </div>
+    </div>
+</main>
+
+
+<!-- <h5><a href="/article_show?user_id=<%=user_id%>&id=<%=artigo.id%>" ><%=artigo.title%></a></h5> -->
+
+
+
+</div>
+
+</div>
+</div>
+</div><!-- /.row -->
 </main><!-- /.container --><br><Br><br>
+
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>

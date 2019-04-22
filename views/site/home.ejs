@@ -1,7 +1,7 @@
 <%- include header.ejs %>
 <style>
 .blog_item {
-    width: 30%;
+    width: 265px;
     /* float:left; */
     margin-left:25px;
     margin-bottom:50px;
@@ -27,6 +27,7 @@
 .container {
   display: flex;
   flex-wrap: wrap;
+  /* justify-content: space-around; */
 }
 /* .container > div {
   flex: 1; /*grow*/
@@ -38,6 +39,15 @@
   <%
    artigos.sort(function(a, b){return new Date(a.date) - new Date(b.date)});
    artigos.forEach(function(item, key, arr){
+
+       // Get the wekday
+       var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+       var data = item.date;
+       var arr = data.split("-").reverse();
+       var teste = new Date(arr[0], arr[1] - 1, arr[2]);
+       var dia = teste.getDay();
+
+
   %>
   <!-- <div class="row">
 <div class="medium-4 large-4 columns"> -->
@@ -46,9 +56,11 @@
   <div class="blog-post_ blog_item card">
     <div style="padding: 10px ">
       <h5><a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" ><%=item.title%></a></h5>
-      <h6><b><%=item.date.split("-").reverse().join("/")%> - <%=item.time%></b><br></h6>
+      <h6><b><%=item.date.split("-").reverse().join("/")%> - <%=semana[dia]%> - <%=item.time%></b><br></h6>
     </div>
-    <img src="/uploads/<%=item.img%>"  alt="image for article" _class="thumbnail" style="width: 2">
+    <a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" >
+      <img src="/uploads/<%=item.img%>"  alt="image for article" _class="thumbnail" style="width: 2">
+    </a>
     <div style="padding: 10px ">
       <b>Farda:</b> <%=item.farda%><br>
       <b>Hinário:</b> <%=item.hinario%><br>
