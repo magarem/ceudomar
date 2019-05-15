@@ -1,0 +1,6 @@
+<h4><%- content.text.call_byId('sidebar').title%></h4>
+<%-help.call_img(content.text.call_byId('sidebar').img)%><br>
+<%= content.text.call_byId('sidebar').body  %>
+<%if (logged) {%>
+  <button class=button onclick="location.href='/text/edit?user_id=<%=user_id%>&title=Sidebar&id=sidebar'">Editar</button>
+<%}%>

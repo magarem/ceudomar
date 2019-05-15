@@ -1,0 +1,30 @@
+<%- include header.ejs %>
+<div class="callout_ large primary" style="margin-bottom: 40px; border-top:7px solid #ECECEC; border-bottom:7px solid #ECECEC;">
+  <div _class="row column text-center">
+    <div class="container_" >
+      <%-help.call_img(content.text.call_byId('topo_'+data.id).img, content.text.call_byId('topo_'+data.id).img_fit)%>
+      <%if (logged) {%>
+        <button class=button onclick="location.href='/text/edit?user_id=<%=user_id%>&title=Topo&id=topo_<%=data.id%>'">Editar</button>
+      <%}%>
+      <!-- <button class="btn">Button</button> -->
+    </div>
+    <!-- <img style="width:100%" src="/uploads/pedra2.jpg" > -->
+
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns" style="margin-bottom: 50px;">
+    <h4><%=data.title%></h4>
+    <div style="float: left; margin-right: 20px;">
+      <%-help.call_img(data.img)%>
+    </div>
+    <p><%=data.body%></p>
+    <br>
+    <br>
+    <%if (logged) {%>
+      <button class=button onclick="location.href='/text/edit?user_id=<%=user_id%>&id=<%=data.id%>'">Editar</button>
+    <%}%>
+    <br><Br>
+  </div>
+</div>
+<%- include footer.ejs %>

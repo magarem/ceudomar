@@ -1,35 +1,23 @@
-
-
-
-
-<footer class="blog-footer">
-
-</footer>
-</body>
-</html>
-
-<footer>
-<div class="row expanded callout secondary">
-  <div class="small-12 small-centered columns">
-    <p>Estrada das Canoas 3046 – São conrado – Rio de Janeiro – RJ</p>
-    <p>Desenvolvido pela Magaweb / Designer: <a href="https://foundation.com">Foundation team</a></p>
-    <p>
-      <a href="#">topo</a>
-      <%if (user_id != "0" ){%>
-        |
-        <a href="/logout?user_id=<%=user_id%>">[Logout]</a>
-      <%}else{%>
-        |
-        <a href="/login">[Login]</a>
-      <%}%>
-    </p>
-  </div>
+<div class="row column">
+  <h4><%- content.text.call_byId('footer').title%></h4>
+  <%-help.call_img(content.text.call_byId('footer').img)%><br>
+  <%= content.text.call_byId('footer').body  %><br>
+  <%if (logged) {%>
+    <button class=button onclick="location.href='/text/edit?user_id=<%=user_id%>&title=Footer&id=footer'">Editar</button>
+  <%}%>
 </div>
-</footer>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
-<script>
-      $(document).foundation();
-    </script>
+<div class="row column">
+  <h4><%- content.text.call_byId('articles').title%></h4>
+  <%-help.call_img(content.text.call_byId('articles').img)%><br>
+  <%= content.text.call_byId('articles').body  %><br>
+  <%if (logged) {%>
+    <button class=button onclick="location.href='/text/edit?user_id=<%=user_id%>&title=Footer&id=footer'">Editar</button>
+  <%}%>
+</div>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
 </body>
 </html>

@@ -1,60 +1,62 @@
-<!-- <div class="top-bar-left"> -->
-<%
-if (typeof user_id === 'undefined') user_id=0
-%>
-
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Foundation | Welcome</title>
-<link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
-<link href='https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
-<link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Tenor+Sans" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Céu do mar</title>
+  <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Tenor+Sans" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+  <style>
+    /* Container needed to position the button. Adjust the width as needed */
+
+
+    /* Make the image responsive */
+    /* .container img {
+      width: 100%;
+      height: auto;
+    } */
+
+    /* Style the button and place it in the middle of the container/image */
+    .container_ .button {
+      position: absolute;
+      top: 200px;
+      left: 50px;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      background-color: #555;
+      color: white;
+      font-size: 16px;
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .container_ .button:hover {
+      background-color: black;
+    }
+  </style>
 </head>
 <body>
-
-
-
-
-<div class="top-bar" style="background-color: white">
-
-<div class="top-bar-left" style="margin-left: 30px; margin-top: 7px">
-<ul class="menu" style="background-color: white">
-<li class="menu-text" style="font-family: 'Montserrat', sans-serif; font-size: 25px; background-color: white"><i class="fas fa-star" style="color:#B08509; font-size:27px"></i> Céu do Mar</li>
-</ul>
-</div>
-
-
-
-
-
-
-
-<div class="top-bar-right" style="margin-right: 70px; margin-top: 10px">
-<ul class="menu" style="background-color: white">
-  <li ><a href="/?user_id=<%=user_id%>">HOME</a>
-
-  </li>
-  <li ><a  href="/drive?user_id=<%=user_id%>">ARQUIVOS</a>
-
-  </li>
-  <li><a  href="/contact?user_id=<%=user_id%>">CONTATO</a>
-
-
-  </li>
-</ul>
-</div>
-</div>
-
-<div class="callout_ large primary" style="margin-bottom: 40px; border-top:7px solid #ECECEC; border-bottom:7px solid #ECECEC;">
-<div _class="row column text-center">
-<img style="width:100%" src="/uploads/pedra2.jpg" >
-</div>
-</div>
+  <div class="top-bar" style="background-color: white">
+    <div class="top-bar-left" style="margin-left: 30px; margin-top: 7px">
+      <ul class="menu" style="background-color: white">
+        <li class="menu-text" style="font-family: 'Montserrat', sans-serif; font-size: 25px; background-color: white"><i class="fas fa-star" style="color:#B08509; font-size:27px"></i> Céu do Mar</li>
+      </ul>
+    </div>
+    <div class="top-bar-right" style="margin-right: 70px; margin-top: 10px">
+      <ul class="menu" style="background-color: white">
+        <li><a href="/?user_id=<%=user_id%>">HOME</a></li>
+        <li><a href="/drive?user_id=<%=user_id%>">ARQUIVOS</a></li>
+        <li><a href="/page?user_id=<%=user_id%>&id=articles%>">ARTIGOS</a></li>
+        <li><a href="/page?user_id=<%=user_id%>&id=contact">CONTATO</a></li>
+      </ul>
+    </div>
+  </div>

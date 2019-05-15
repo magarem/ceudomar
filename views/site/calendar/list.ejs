@@ -1,0 +1,56 @@
+<style>
+  .card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: <%=card_width%>;
+    margin-right: <%=card_margin%>;
+    margin-bottom: 25px;
+  }
+
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+  /* Add some padding inside the card container */
+  .container {
+    padding: 2px 16px;
+  }
+</style>
+<%
+ calendar.events.sort(function(a, b){return new Date(a.date) - new Date(b.date)});
+ calendar.events.forEach(function(item, key, arr){
+   // Get the wekday
+   var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+   var data = item.date;
+   var arr = data.split("-");
+   var teste = new Date(arr[0], arr[1] - 1, arr[2]);
+   var dia = teste.getDay();
+ %>
+
+ <div class="card">
+   <%if (item.img) {%>
+     <a href="/article_show?user_id=<%=user_id%>&id=<%=item.id%>" >
+       <img src="/uploads/<%=item.img%>"  alt="image for article" _class="thumbnail" style="width:100%">
+     </a>
+   <%}%>
+   <div class="container">
+     <h5><a href="/calendar/evento_show?user_id=<%=user_id%>&id=<%=item.id%>" ><%=item.title%></a></h5>
+     <h6><b><%=item.date.split("-").reverse().join("/")%> - <%=semana[dia]%> - <%=item.time%></b><br></h6>
+         <div _style="padding: 10px ">
+         <b>Farda:</b> <%=item.farda%><br>
+         <b>Hinário:</b> <%=item.hinario%><br>
+         <b>Contribuição sugerida:</b> <%=item.price%><br>
+         <%=item.obs%>
+       </div>
+   </div>
+ </div>
+ <%})%>
+ <%
+  if (logged) {
+    //Set a ramdom Id to new evento
+    var evento_new_id = Math.random().toString(26).slice(2)
+  %>
+   <a href='/calendar/evento_edit?user_id=<%=user_id%>&id=<%=evento_new_id%>' class="button">Novo</a>
+ <%}%>

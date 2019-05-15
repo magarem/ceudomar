@@ -1,0 +1,149 @@
+<%- include ../header.ejs %>
+<body>
+  <form id=form method="post" action="/up-file" enctype="multipart/form-data">
+    <div class="row">
+      <div class="large-3 columns">
+
+          <input id="user_id" name="user_id" type="hidden" value="<%=user_id%>"  >
+          <input id="id" name="id" type="hidden" value="<%=data.id%>"  >
+
+          <label for="imagem" >Imagem</label>
+          <input type="hidden" id="img_" name="img_" value="<%=data.img%>">
+          <div id="divServerResponse">
+          </div>
+          <div id="divServerResponse_">
+           <%
+           if (data.img || true){
+           %>
+            <img id=formImg src=/uploads/<%=data.img%> style="width:260px" class="thumbnail">
+           <%
+           }
+           %>
+           <a onclick='if (banco_img.style.display=="none") {banco_img.style.display="block"} else {banco_img.style.display="none"}'>Banco de imagem</a>
+           <div id=banco_img style="width: 200px; overflow: scroll; height: 200px; background-color: #e9edbb; border-style: solid; display: none;">
+           <ul style="margin-left: 20px;">
+
+           <%
+            imgs.forEach(function(item){
+           %>
+            <input id="id" name="img_fit" type="hidden" value="<%=data.img_fit%>"  >
+            <button type=button onclick='img_.value="<%=item%>";formImg.src="/uploads/<%=item%>"' class=button_>
+               <img src=/uploads/<%=item%> style="width: 150px;">
+            </button>
+            <div class="button-group">
+              <button type=button onclick='img_.value="<%=item%>";formImg.src="/uploads/<%=item%>"' class="button small round"><i class="fi-check"></i></button>
+              <button type=button class="button alert small round" onclick='img_delete("<%=item%>")'><i class="fi-trash"></i></button>
+            </div><br>
+           <%
+           })
+           %>
+         </ul></div>
+       </div>
+
+     </label><br>
+     <div class="button-group">
+       <button type=button onclick='img_.value="";formImg.src=""'  for="img" class="button small">Sem imagem</button>
+       <input type="file" id="img" name="img" accept="image/*" class="show-for-sr">
+       <label for="img" class="button small">Enviar imagem</label>
+       <input type="file" id="img" name="img" accept="image/*" class="show-for-sr">
+     </div>
+ </div>
+      <div  class="large-9 columns" _style="margin: -30px 0px 0px 10px">
+        <input type=text id=title name=title value="<%=data.title%>">
+        <textarea style="font-size:18px; width:100%; height:500px;" id="txt" name="txt"><%=data.body%></textarea>
+        <div class="button-group">
+          <button class="button success" type="button" onclick="save()">Salvar</button>
+          <button class="button warning"  type="button" onclick="javascript:history.go(-1)">Cancelar</button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div><br><br>
+  </form>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!-- <script src="https://www.marvinj.org/releases/marvinj-0.8.js"></script> -->
+  <script src="../js/load-image.all.min.js"></script>
+
+  <script>
+  form = new FormData();
+  document.getElementById('img').onchange = function (e) {
+      loadImage(
+        e.target.files[0],
+        function (file) {
+          // document.body.appendChild(file);
+          var formImg = document.getElementById('formImg');
+          if (formImg) formImg.style.visibility = 'hidden';
+          $("#divServerResponse").html(file);
+
+          form.delete('txt');
+          form.delete('blob');
+          form.append('name', e.target.files[0].name);
+          form.append('img_fit', '<%=data.img_fit%>');
+          form.append('blob', file.toDataURL());
+        },
+        {maxWidth: <%=(data.img_fit=='100%')?1300:270%>,
+        orientation: true,
+        canvas: true,
+        downsamplingRatio:0.5} // Options
+      );
+  };
+
+
+  function save(){
+    $("#divServerResponse").html("uploading...");
+    form.append('user_id', document.getElementById('user_id').value);
+    form.append('id', document.getElementById('id').value);
+    form.append('title', document.getElementById('title').value);
+    form.append('txt', document.getElementById('txt').value);
+    form.append('img_', document.getElementById('img_').value);
+    $.ajax({
+            method: 'POST',
+            url: '/text/edit_do',
+            data: form,
+            // enctype: 'multipart/form-data',
+            contentType: false,
+            processData: false,
+
+
+            success: function (resp) {
+              $("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
+              //location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
+            },
+            error: function (data) {
+              console.log("error:"+error);
+              console.log(data);
+            },
+
+          });
+  };
+
+
+  function img_delete(img){
+    confirm("Confirma?","", function() {
+    // do something if confirmed
+      $.ajax({
+      method: 'get',
+      url: '/img_delete?img=' + img,
+      // data: form,
+      // enctype: 'multipart/form-data',
+      contentType: false,
+      processData: false,
+
+      success: function (resp) {
+        $("#divServerResponse").html("Imagem excluida com sucesso");
+        // location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
+      },
+      error: function (data) {
+        console.log("error:"+error);
+        console.log(data);
+      },
+
+    });
+    });
+  }
+
+
+
+  </script>
+</body>
+<% include ../footer %>

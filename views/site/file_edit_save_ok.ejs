@@ -1,0 +1,21 @@
+<%- include header.ejs %>
+<body>
+  <form id=form method="post" action="/file_edit_save" >
+    <div class="row">
+      <div class="col-12" style="margin: 10px 10px">
+        <h4><%=title%></h4>
+        <p>Arquivo salvo com sucesso</p>
+      </div>
+     <div class="row">
+       <div class="large-12 columns">
+         <div class="button-group">
+           <button class="button warning"  type="button" onclick="location.href='/?user_id=<%=user_id%>'">Ok</button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div><br><br>
+  </form>
+
+</body>
+<%- include footer.ejs %>

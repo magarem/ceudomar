@@ -1,0 +1,39 @@
+{
+  "id": "calendar",
+  "date_created": "10/10/10",
+  "obs": "sdfdsf",
+  "events":[
+    {
+        "id": "9jj6b8j9ljia",
+        "title": "krsna2",
+        "date": "2050-10-10",
+        "time": "",
+        "farda": "este",
+        "hinario": "",
+        "price": "",
+        "img": "6f24f3l58ekh.jpg",
+        "obs": ""
+    },
+    {
+        "id": "74hbd9ekcli",
+        "title": "maga ninja!",
+        "date": "2045-10-10",
+        "time": "",
+        "farda": "44444",
+        "hinario": "",
+        "price": "",
+        "img": "811aa4f895am.jpg",
+        "obs": ""
+    },
+    {
+        "id": "dd0nbn6kaiic",
+        "title": "1111",
+        "date": "2032-10-10",
+        "time": "",
+        "farda": "",
+        "hinario": "",
+        "price": "",
+        "img": "95gh2b87d25.jpg",
+        "obs": ""
+    }]
+}

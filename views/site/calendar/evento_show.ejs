@@ -1,0 +1,104 @@
+<%- include ../header.ejs %>
+<main role="main" class="container">
+    <div class="row">
+      <div class="large-3 columns" >
+      &nbsp;
+      </div>
+      <div class="large-6 columns text-center" >
+        <h4 class="blog-post-title"><%=evento.title%></h4><br>
+        <%if (evento.img){%>
+          <img src="/uploads/<%=evento.img%>" class="thumbnail" style="width:260px; float: left;">
+        <%}%>
+        <table align=center>
+          <tbody>
+            <tr>
+              <td align="right"><b>Data</b></td>
+              <td><%=evento.date.split("-").reverse().join("/")%> - <%=evento.time%></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Farda</b></td>
+              <td><%=evento.farda%></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Hinário</b></td>
+              <td><%=evento.hinario%></td>
+            </tr>
+            <tr>
+              <td align="right"><b>Contribuição sugerida</b></td>
+              <td><%=evento.price%></td>
+            </tr>
+            <tr>
+              <td align="right" colspan="2"><%=evento.obs%></td>
+            </tr>
+            <%if (logged) {%>
+            <tr>
+              <td align="right" colspan="2">
+                <div class="button-group">
+                  <button class="button success " onclick="location.href='/calendar/evento_edit?user_id=<%=user_id%>&id=<%=evento.id%>'">Editar</button>
+                  <button class="button alert" onclick="evento_delete('<%=user_id%>', '<%=evento.id%>')">Excluir</button>
+                  <button class="button" onclick="location.href='/?user_id=<%=user_id%>'">Cancelar</button>
+                </div>
+                </td>
+            </tr>
+            <%}%>
+
+          </tbody>
+        </table>
+
+      </div>
+      <div class="large-3 columns" >
+
+      </div>
+    </div>
+</main>
+
+
+<!-- <h5><a href="/evento_show?user_id=<%=user_id%>&id=<%=evento.id%>" ><%=evento.title%></a></h5> -->
+
+
+
+</div>
+
+</div>
+</div>
+</div><!-- /.row -->
+</main><!-- /.container --><br><Br><br>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  form = new FormData();
+  function evento_delete(user_id, id){
+
+    if (confirm('Confirma exclusão de registro?')){
+      // Build form data to pass the id to exclude
+
+      // form.append('id', id);
+      data = {}
+      data.user_id = user_id
+      data.id = id
+
+      $.ajax({
+        method: 'POST',
+        url: '/calendar_evento_delete',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        // enctype: 'multipart/form-data',
+        processData: false,
+        success: function (resp) {
+          //$("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
+          //location.href="/evento_show?id=" + document.getElementById('id').value
+          location.href = "/calendar_evento_delete_ok?user_id=" + resp.user_id
+        },
+        error: function (data) {
+          console.log("error:"+error);
+          console.log(data);
+        }
+      })
+    }
+  }
+</script>
+<%- include ../footer.ejs %>

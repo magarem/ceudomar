@@ -1,394 +1,160 @@
 const express = require('express');
-// const multer = require('multer')
 const ejs = require('ejs')
 const path = require('path')
 const fs = require('fs');
+
+// Upload module
 const multer = require("multer");
-var session = require('express-session');
+var upload = multer({ storage: multer.memoryStorage({}) })
 
-
-// const sharp = require('sharp')
-var artigos = require('./data.json');
-var login_var = require('./login.json');
- console.log('>>>login_var', login_var);
-
-
-
+var showdown  = require('showdown');
 var bodyParser = require('body-parser');
 
+var help = require('./app_modules/help');
+var auth = require('./app_modules/auth');
+
+// Modules of contents
+var text = require('./app_modules/text');
+var calendar = require('./app_modules/calendar');
+
+
+content = {}
+content.text = text
+content.calendar = calendar
 
 // Init app
 const app = express();
 
-//app.use(session({secret:'delicitas***',  maxAge: Date.now() + (30 * 86400 * 1000)}));
-// var sessionOptions = {
-//   key: 'session.sid',
-//   secret: 'Some secret key',
-//   resave: true,
-//   saveUninitialized: true,
-//   cookie: {
-//     secure: false,
-//     maxAge: 600000
-//   }
-// };
+console.log('content:', content);
 
-// app.use(session(sessionOptions));
+app.locals.content = content
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// parse application/json
-// app.use(bodyParser.json());
-
-var upload = multer({ storage: multer.memoryStorage({}) })
-
-function login_check(user_id){
-  user_id = user_id||0
-  logged = false
-  console.log('user_id>>>:', user_id);
-  console.log('login_var>>>:', login_var);
-  logged = login_var.find(x => x.user_id.toString() === user_id.toString())
-  console.log('logged:::>>>:', logged);
-  return logged
-}
-
-// EJS
 app.set('view engine', 'ejs');
-
-// Public Folder
 app.use(express.static('./public'));
 
+// Helpers functions
+// function call_img(file=null){
+//   if (file !="" & fs.existsSync('public/uploads/' + file)) {
+//     return "<img src='uploads/"+ file + "'>"
+//   }else{
+//     return null
+//   }
+// }
+// function call_content(type, id){
+//   return content[type].find(function (item){return item.id == id});
+// }
+// var help = {
+//   call_content: call_content,
+//   call_img: call_img
+// }
 
-app.get('/login', (req, res) =>{
-  //ssn=req.session;
+// Aux functions
+// function login_check(user_id){
+//   return login_var.find(x => x.user_id.toString() === (user_id||0).toString())||false
+// }
 
+// Load Sidebar
+// converter = new showdown.Converter()
+//
+// sidebar_txt = fs.readFileSync('./sidebar.md', 'utf8').toString()
+// sidebar_txt  = converter.makeHtml(sidebar_txt);
+//
+// footer_txt = fs.readFileSync('./footer.md', 'utf8').toString()
+// footer_txt  = converter.makeHtml(footer_txt);
 
-  //if (!ssn.user_id) ssn.user_id = user_id
-  res.render('site/login_form', {artigos:artigos, erro: false})
-});
-
-app.post('/login_do', (req, res) =>{
-  // ssn=req.session;
-  // user_id = req.body.user_id
-  user = req.body.user
-
-  password = req.body.password
-  if (password == "topodamata"){
-    user_id = Math.random().toString(26).slice(2);
-    logged = true
-
-    //Save loggin pass
-    login_var_new = {
-      user_id: user_id,
-      logged: true,
-      timestamp: Date.now()
-    }
-
-    console.log("login_var:", login_var);
-    login_var = login_var.filter(function( obj ) {
-        return obj.user_id.toString() !== user_id.toString();
-    });
-
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-
-    // Clean up old entrys
-    login_var = login_var.filter(function( obj ) {
-      console.log('obj.timestamp:', obj.timestamp);
-      console.log('(obj.timestamp - Date.now()):', (Date.now() - _MS_PER_DAY));
-      return obj.timestamp > (Date.now() - _MS_PER_DAY)
-    });
-
-    login_var.push(login_var_new)
-
-    fs.writeFileSync("./login.json", JSON.stringify(login_var, null, 4))
-
-    //Exclude all old articles
-    //Deleting olders itens
-    d = new Date(Date.now()).getDate().toString()
-    m = (new Date(Date.now()).getMonth()).toString()
-    y = new Date(Date.now()).getFullYear().toString()
-    artigos_ = []
-    artigos.forEach(function(item){
-      console.log("before--*", new Date(item.date.split('-').join(',')), new Date(y,m,d,00,00,00));
-      if (new Date(item.date.split('-').join(',')) >= new Date(y,m,d,00,00,00)){
-        console.log("after--*", new Date(item.date), new Date(y,m,d));
-        artigos_.push(item)
-      }
-    });
-    artigos = artigos_
-    // Cheks the limits
-    if (artigos.length > 20) artigos.length = 20
-    // Json file save
-    fs.writeFileSync("./data.json", JSON.stringify(artigos, null, 4))
+// function call_content_all(type){
+//   return content[type];
+// }
 
 
-    res.render('site/login_form_pass', {user_id: user_id, logged: logged})
-  }else{
-    user_id = 0
-    logged = false
-    res.render('site/login_form', {user_id: user_id, erro: true})
-  }
+// Date aux
+const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+// Filter to show only the newers
+var d = new Date(Date.now()).getDate().toString()
+var m = new Date(Date.now()).getMonth().toString()
+var y = new Date(Date.now()).getFullYear().toString()
 
-});
+// Basics contets of views
+//var sidebar = text.call_content('sidebar')
+//var footer = text.call_content('footer')
 
+// Load modules
+app.use('/calendar', calendar);
+app.use('/text', text);
+app.use('/auth', auth);
 
-app.get('/logout', (req, res) =>{
-  // ssn=req.session;
-  // user_id = req.body.user_id
-  user_id = req.query.user_id
-
-  // Delte user id from user adm list
-  login_var = login_var.filter(function( obj ) {
-      return obj.user_id.toString() !== user_id.toString();
-  });
-
-  fs.writeFileSync("./login.json", JSON.stringify(login_var, null, 4))
-
-  res.render('site/logout')
-});
-
+// ---------------------------------------------------------------------
+// Routers
+// ---------------------------------------------------------------------
 
 app.get('/', (req, res) =>{
-  // console.log("-----------**");
-  user_id_ = req.query.user_id
-  logged_ = login_check(req.query.user_id)
 
-  if (typeof user_id_ === 'undefined') {user_id_ = 0}else{console.log('user_id:',user_id_)}
-  if (typeof logged_ === 'undefined') logged_ = false
-  // if (typeof user_id === 'undefined') user_id = 0
-  // if (user_id === null) user_id = 0
-  // if (logged === null) logged = false
-  //user_id = Math.random().toString(26).slice(2);
-  // ssn=req.session;
-  // if (!ssn.user_id) ssn.user_id = user_id
+  // Get values
+  var user_id = (typeof req.query.user_id !== 'undefined') ? req.query.user_id : false
+  var logged = auth.login_check(user_id)
 
-  //Filter to show only the newers
-  d = new Date(Date.now()).getDate().toString()
-  m = (new Date(Date.now()).getMonth()).toString()
-  y = new Date(Date.now()).getFullYear().toString()
-  artigos_ = []
-  artigos.forEach(function(item){
-    console.log("before--*", new Date(item.date.split('-').join(',')), new Date(y,m,d,00,00,00));
+  calendar_ = []
+  calendar.data.events.forEach(function(item){
     if (new Date(item.date.split('-').join(',')) >= new Date(y,m,d,00,00,00)){
-      console.log("after--*", new Date(item.date), new Date(y,m,d));
-      artigos_.push(item)
+      calendar_.push(item)
     }
   });
-  artigos = artigos_
+  calendar.data.events = calendar_
 
-  res.render('site/home', {artigos:artigos, user_id: user_id_, logged: logged_})
+  // Load Sidebar
+  // converter = new showdown.Converter()
+  //
+  // sidebar_txt = fs.readFileSync('./sidebar.md', 'utf8').toString()
+  // sidebar_txt  = converter.makeHtml(sidebar_txt);
+  //
+  // footer_txt = fs.readFileSync('./footer.md', 'utf8').toString()
+  // footer_txt  = converter.makeHtml(footer_txt);
+
+  // sidebar = require("./content.json").find(function (item){return item.id = "sidebar"});
+  // console.log("sidebar:", sidebar);
+  // sidebar = call_content("text", "sidebar")
+  // footer = call_content("text", "footer")
+
+  // Call view
+  res.render('site/home', {help: help, calendar: calendar.data, user_id: user_id, logged: logged})
 });
 
-app.get('/contact', (req, res) =>
-  res.render('site/contact', {user_id: req.query.user_id})
-);
-app.get('/drive', (req, res) =>
-  res.render('site/drive_virtual', {user_id: req.query.user_id})
-);
+app.get('/drive', (req, res) =>{
 
-//
-//  Show artivle by Id
-//
-app.get('/article_show', (req, res) => {
+  // Get values
+  var user_id = req.query.user_id
+  var logged = auth.login_check(user_id)
 
-  console.log(">>req.query.user_id:", req.query.user_id);
+  var data = text.call_byId('drive_virtual')
 
-  logged = login_check(req.query.user_id)
+  // Call view
+  res.render('site/drive_virtual', {help: help, user_id: req.query.user_id, data: data, logged: logged, text: text})
+});
 
-  console.log(">>logged:", logged);
+app.get('/page', (req, res) =>{
 
-  //Select article item
-  artigo = artigos.filter(function (item) {
-    console.log('item:', item);
-   return item.id === req.query.id;
-  })
+  // Get values
+  var user_id = req.query.user_id
+  var id = req.query.id
+  var logged = auth.login_check(user_id)
 
-  console.log('artigo>>>', artigo);
-  // Checks if is a logged user
-  // user_id = 0
-  // logged = false
-  // if (req.query.user_id) {
-  user_id = req.query.user_id
-  //   logged = true
-  // }
-  res.render('site/article_show', {artigo: artigo[0], user_id: user_id, logged: logged})
+  var data = text.call_byId(id)
+
+  // Call view
+  res.render('site/page', {help: help, user_id: user_id, logged: logged, data: data})
 
 });
 
 
-//
-// Delete articles item
-//
-app.post('/article_delete', (req, res, next) => {
-  //Checks user profile
-  logged = login_check(req.body.user_id)
-
-  if (logged){
-    console.log("req:", req.body.id)
-    artigos = artigos.filter(function( obj ) {
-        return obj.id.toString() !== req.body.id.toString();
-    });
-    fs.writeFileSync("./data.json", JSON.stringify(artigos, null, 4))
-
-    res.status(200).json({user_id:req.body.user_id, status:"ok"})
- }
-})
-//
-// Delete articles item
-//
-app.get('/article_delete_ok', (req, res, next) => {
-  res.render('site/article_delete_ok',{user_id: req.query.user_id})
-})
-//
-// Form data save with image upload
-//
-app.post('/up', upload.single('blob'), (req, res, next) => {
-
-  logged = login_check(req.body.user_id)
-  console.log('/up:', logged);
-
-  if (logged){
-      var article_new_id = Math.random().toString(26).slice(2)
-      console.log("article_new_id:", article_new_id)
-
-      if (req.body.img_) {
-        console.log("------------------");
-        var imgName = req.body.img_
-      }else{
-        var imgName = ""
-      }
-
-      // Checks out if has a uploaded image
-      if (req.body.blob){
-        console.log("req.body.name:", req.body.name);
-        console.log("req.body.blob:", req.body.blob);
-        var base64Data = req.body.blob.replace(/^data:image\/png;base64,/, "");
-        imgName = (req.body.id || article_new_id) + path.extname(req.body.name)
-        // Save image
-        require("fs").writeFile("public/uploads/" + imgName, base64Data, 'base64', function(err) {
-          console.log(err);
-        });
-      }
-
-      console.log("imgName:", imgName);
-
-
-      // Delete existent reg
-      if (req.body.id){
-        console.log("req.body.id:", req.body.id);
-        // artigos.splice(artigos.findIndex(e => e.id.toString() === req.body.id.toString()),1);
-        // Delete existent rec
-        artigos = artigos.filter(function( obj ) {
-            return obj.id.toString() !== req.body.id.toString();
-        });
-
-        article_id = req.body.id
-
-      }else{
-        article_id = article_new_id
-      }
-
-      file_txt =
-        {
-          "id": article_id,
-          "title": req.body.title,
-          "date": req.body.date,
-          "time": req.body.time,
-          "farda": req.body.farda,
-          "hinario": req.body.hinario,
-          "price": req.body.price,
-          "img": imgName,
-          "obs":req.body.obs
-        }
-
-      // Json Add Reg
-      artigos.push(file_txt)
-
-     // Json file save
-     fs.writeFileSync("./data.json", JSON.stringify(artigos, null, 4))
-     res.send(article_id)
+app.get('/img_delete', (req, res) => {
+  if (login_check(req.body.user_id)){
+    fs.unlinkSync('./public/uploads/' + req.query.img)
+    res.send(req.query.img)
   }
-})
-
-app.post("/upload",
-    (req, res) => {
-      const article_new_id = Math.random().toString(26).slice(2)
-      // image takes from body which you uploaded
-      var imageBuffer = new Buffer.from(req.body.blob, 'base64');
-      // const imgdata = req.body.blob;
-      console.log('imageBuffer:', imageBuffer);
-      const name = req.body.name;
-      console.log('name:', name);
-      const imgName = req.body.id || article_new_id
-    }
-
-  );
-
-
-
-
-app.get('/article_create', (req, res) => {
-  artigo = {
-    id: "",
-    title: "",
-    date: "",
-    time: "",
-    farda: "",
-    hinario: "",
-    price: "",
-    obs: ""
-  }
-  res.render('site/article_form', {user_id: req.query.user_id, artigo: artigo})
-
 });
 
-app.get('/article_edit', (req, res) => {
-  artigo = artigos.filter(function (item) {
-    console.log('item:', item);
-   return item.id === req.query.id;
-  })
-  artigo = artigo[0]
-  console.log('artigo>>>', artigo);
-  res.render('site/article_form', {user_id: req.query.user_id, artigo: artigo})
-
-});
-
-
-app.post('/article_new_do', (req, res) => {
-  //article_new_id = Math.random().toString(26).slice(2)
-
-  upload(req, res, (err) => {
-    if(err){
-      res.render('index', {
-        msg: err
-      });
-    } else {
-      console.log('req.body.id:', req.body.id);
-      if (req.body.id){
-        artigos.splice(artigos.findIndex(e => e.id.toString() === req.body.id.toString()),1);
-      }
-
-      file_txt =
-        {
-        "id": req.body.id || article_new_id,
-        "title": req.body.title,
-        "date": req.body.date,
-        "time": req.body.time,
-        "farda": req.body.farda,
-        "hinario": req.body.hinario,
-        "price": req.body.price,
-        "img": req.body.img,
-        "obs":req.body.obs}
-      console.log('artigos:', artigos);
-      console.log('file_txt:', file_txt);
-      artigos.push(file_txt)
-      console.log('artigos:', artigos);
-
-      fs.writeFileSync("./data.json", JSON.stringify(artigos))
-      res.render('site/article_new_do')
-      //res.send('test');
-    }
-  })
-})
 const port = 3000;
 const handleError = (err, res) => {
   res

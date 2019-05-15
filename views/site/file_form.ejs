@@ -1,0 +1,285 @@
+<%- include header.ejs %>
+<body>
+  <form id=form method="post" action="/file_edit_save" enctype="multipart/form-data">
+
+    <div class="row">
+      <div class="col-12" style="margin: 10px 10px">
+        <h4>Editando texto</h4>
+      </div>
+    </div>
+  <style>
+    label{
+      font-weight: bold;
+    }
+    input[type=text]{
+      font-size: 17px;
+    }
+  </style>
+    <div class="row">
+      <div class="large-6 columns">
+        <input id="user_id" name="user_id" type="hidden" value="<%=user_id%>"  >
+        <input id="id" name="id" type="hidden" value="<%=artigo.id%>"  >
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="large-3 columns">
+
+          <label for="imagem" >Imagem</label>
+          <input type="hidden" id="img_" name="img_" value="<%=artigo.img%>">
+            <div id="divServerResponse">
+            </div>
+            <div id="divServerResponse_">
+           <%
+           if (artigo.img || 1){
+           %>
+            <img id=formImg src=/uploads/<%=artigo.img%> style="width:260px" class="thumbnail">
+           <%
+           }
+           %>
+           <a onclick='if (banco_img.style.display=="none") {banco_img.style.display="block"} else {banco_img.style.display="none"}'>Banco de imagem</a>
+           <div id=banco_img style="width: 200px; overflow: scroll; height: 200px; background-color: #e9edbb; border-style: solid; display: block;">
+           <ul style="margin-left: 20px;">
+
+           <%
+            files.forEach(function(item){
+           %>
+            <button type=button onclick='img_.value="<%=item%>";formImg.src="/uploads/<%=item%>"' class=button_>
+               <img src=/uploads/<%=item%> style="width: 150px;">
+            </button>
+            <div class="button-group">
+              <button type=button onclick='img_.value="<%=item%>";formImg.src="/uploads/<%=item%>"' class="button small round"><i class="fi-check"></i></button>
+              <button type=button class="button alert small round" onclick='img_delete("<%=item%>")'><i class="fi-trash"></i></button>
+            </div><br>
+           <%
+           })
+           %>
+
+           </ul></div>
+         </div>
+
+            <!-- <input style="padding-top:10px" type="file" id="img" name="img" accept="image/*"> -->
+
+          </label><br>
+          <div class="button-group">
+
+            <button type=button onclick='img_.value="";formImg.src=""'  for="img" class="button small">Sem imagem</button>
+            <input type="file" id="img" name="img" accept="image/*" class="show-for-sr">
+            <label for="img" class="button small">Enviar imagem</label>
+            <input type="file" id="img" name="img" accept="image/*" class="show-for-sr">
+          </div>
+      </div>
+
+
+      <div class="large-9 columns">
+        <div class="row">
+          <div class="large-4 columns">
+          <label for="titulo" >Título
+            <input id="title" name="title" type="text" value="<%=artigo.title%>"  required="required" >
+          </label>
+        </div>
+          <div class="large-4 columns">
+          <label for="data" >Data</label>
+            <input id="date" name="date" type="date" required="required"  value="<%=artigo.date%>"  >
+          </label>
+        </div>
+          <div class="large-4 columns">
+          <label for="horario" >Horário</label>
+            <input id="time" name="time" type="time" required="required"  value="<%=artigo.time%>"  >
+          </label>
+        </div>
+        </div>
+        <div class="row">
+          <div class="large-4 columns">
+          <label for="farda" >Farda</label>
+            <input id="farda" name="farda" type="text" required="required"  value="<%=artigo.farda%>"  >
+          </label>
+        </div>
+          <div class="large-4 columns">
+          <label for="hinario" >Hinário</label>
+            <input id="hinario" name="hinario" type="text"  value="<%=artigo.hinario%>"  >
+          </label>
+        </div>
+          <div class="large-4 columns">
+          <label for="price" >Contribuição sugerida</label>
+            <input id="price" name="price" type="text"  value="<%=artigo.price%>"  >
+          </label>
+        </div>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <label for="obs" >Obs
+              <textarea style="font-size:22px; width:100%; height:100px;" id="obs" name="obs"  ><%=artigo.obs%></textarea>
+            </label>
+          </div>
+        </div>
+
+
+     <div class="row">
+       <div class="large-12 columns">
+         <div class="button-group">
+
+
+   <!-- Link to open the modal -->
+   <p><a href="#ex1" rel="modal:open">Open Modal</a></p>
+           <button class="button success" type="button" onclick="resizeAndSendToServer()">Salvar</button>
+           <button class="button warning"  type="button" onclick="javascript:history.go(-1)">Cancelar</button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div><br><br>
+  </form>
+
+
+  <div id="ex1" class="modal">
+  <p>Imagem excluida com sucesso</p>
+  <a href="#" rel="modal:close">Fechar</a>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+  <!-- <script src="https://www.marvinj.org/releases/marvinj-0.8.js"></script> -->
+  <script src="js/load-image.all.min.js"></script>
+
+  <script>
+  function confirm(title, message, callback) {
+		// create your modal template
+		var modal = '<div class="reveal small" id="confirmation">'+
+			     		'<h2>'+title+'</h2>'+
+			   		'<p class="lead">'+message+'</p>'+
+         			'<button class="button success yes">Sim</button>'+
+			    		'<button class="button alert float-right" data-close>não</button>'+
+		       		'</div>';
+		// appending new reveal modal to the page
+		$('body').append(modal);
+		// registergin this modal DOM as Foundation reveal
+		var confirmation = new Foundation.Reveal($('#confirmation'));
+		// open
+		confirmation.open();
+		// listening for yes click
+
+		$('#confirmation').children('.yes').on('click', function() {
+			// close and REMOVE FROM DOM to avoid multiple binding
+			confirmation.close();
+			$('#confirmation').remove();
+      	// calling the function to process
+      	callback.call();
+    	});
+		$(document).on('closed.zf.reveal', '#confirmation', function() {
+			// remove from dom when closed
+			$('#confirmation').remove();
+		});
+
+	}
+  // window.onload = function() {
+    banco_img.style.display="none"
+  // };
+
+  form = new FormData();
+  document.getElementById('img').onchange = function (e) {
+
+      loadImage(
+        e.target.files[0],
+        function (file) {
+          // document.body.appendChild(file);
+          var formImg = document.getElementById('formImg');
+          if (formImg) formImg.style.visibility = 'hidden';
+          $("#divServerResponse").html(file);
+
+          console.log("file.toDataURL():", file.toDataURL());
+          form.delete('name');
+          form.delete('blob');
+          form.append('name', e.target.files[0].name);
+          form.append('blob', file.toDataURL());
+        },
+        {maxWidth: 270, orientation: true,
+        canvas: true,
+        downsamplingRatio:0.5} // Options
+      );
+    };
+
+
+      function resizeAndSendToServer(){
+        // Checks da date
+        d = new Date(Date.now()).getDate().toString()
+        m = (new Date(Date.now()).getMonth()).toString()
+        y = new Date(Date.now()).getFullYear().toString()
+
+
+        var date_today = new Date(y,m,d);
+
+        mydate=new Date(document.getElementById('date').value.split('-').join(','));
+
+        if(1==1){
+          $("#divServerResponse").html("uploading...");
+          form.append('user_id', document.getElementById('user_id').value);
+          form.append('id', document.getElementById('id').value);
+          form.append('title', document.getElementById('title').value);
+          form.append('date', document.getElementById('date').value);
+          form.append('time', document.getElementById('time').value);
+          form.append('farda', document.getElementById('farda').value);
+          form.append('hinario', document.getElementById('hinario').value);
+          form.append('price', document.getElementById('price').value);
+          form.append('obs', document.getElementById('obs').value);
+          form.append('img_', document.getElementById('img_').value);
+        	$.ajax({
+        		method: 'POST',
+        		url: '/up',
+        		data: form,
+        		// enctype: 'multipart/form-data',
+        		contentType: false,
+        		processData: false,
+
+
+        		success: function (resp) {
+              $("#divServerResponse").html("SERVER RESPONSE (NEW IMAGE):<br/>");
+              location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
+            },
+        		error: function (data) {
+        			console.log("error:"+error);
+        			console.log(data);
+        		},
+
+        	});
+        }else{
+          alert("Erro: A data já venceu")
+          document.getElementById('date').focus()
+        }
+      };
+
+      function img_delete(img){
+        confirm("Confirma?","", function() {
+        // do something if confirmed
+
+        $.ajax({
+          method: 'get',
+          url: '/img_delete?img=' + img,
+          // data: form,
+          // enctype: 'multipart/form-data',
+          contentType: false,
+          processData: false,
+
+          success: function (resp) {
+            $("#divServerResponse").html("Imagem excluida com sucesso");
+            // location.href="/article_show?user_id=" + document.getElementById('user_id').value + "&id="+resp
+          },
+          error: function (data) {
+            console.log("error:"+error);
+            console.log(data);
+          },
+
+        });
+
+        // alert('Omg, it works!');
+
+      });
+      }
+
+
+
+  </script>
+</body>
+<%- include footer.ejs %>
