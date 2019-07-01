@@ -155,7 +155,7 @@ app.get('/img_delete', (req, res) => {
   }
 });
 
-const port = 3000;
+const port = 8080;
 const handleError = (err, res) => {
   res
     .status(500)
